@@ -17,7 +17,7 @@ I'm not going to speak about pros and cons, instead, here are a few reasons why 
 
 **Pricing.** I don't like the pricing for PaaS platforms, it is unreasonably high when we talk about some serious load (personal apps can also be heavy, yeah). And this is doubly pointless when you take into account the fact that you can get a VPS in <a href="http://aws.amazon.com" target="_blank">Amazon AWS</a> for free. Yep, it's only for one year, but still.
 
-However, upon the rejection of the PaaS deployment method, you may encounter a series of problems with support, maintenance, and, speaking honestly, it won't that fast as it can be with <a href="https://www.pythonanywhere.com" target="_blank">PythonAnywhere</a>. So if you don't afraid to do everything by self, then my experience will be useful to you. Otherwise, feel free to use the links above and read more about different PaaS platforms, most probably they will fit your needs by 100% (and yes, free plans are also included).
+However, PaaS is simple, that is its main advantage, otherwise, when running your own server, you may encounter a series of problems with support, maintenance, and, speaking honestly, it won't that fast as it can be with <a href="https://www.pythonanywhere.com" target="_blank">PythonAnywhere</a>. So if you don't mind getting your hands dirty, then my experience will be useful to you. If not, feel free to use the links above and read more about different PaaS platforms, most probably they will fit your needs by 100% (and yes, free plans are also included).
 
 As for me, I use <a href="https://www.arubacloud.com" target="_blank">Aruba Cloud</a> for my personal needs, but for this article I will use a VPS hosted in <a href="http://aws.amazon.com" target="_blank">Amazon AWS</a>. Although it has no special significance, since in the end, we only work with the operating system that will be installed on our VPS. So you can choose any provider you like, or you can do this even locally.
 
@@ -80,8 +80,6 @@ sudo service --status-all | grep nginx
 
 And, finally, open the browser and go to the address of your server. If everything is OK, you will see something like this:
 
-> In case of doing this locally, it should be http://localhost/.
-
 <img src="http://unfrm.us/static/img/posts/20160718/nginx_started.png" alt="nginx started">
 
 Okay, it works, we can stop it (at least for now):
@@ -92,7 +90,7 @@ sudo service nginx stop
 
 **Gunicorn.** Last but not least - the Green Unicorn, a Python WSGI HTTP server. There is two different ways to install it. If you want to use it as a Python module, or if you want to use a virtualenv, you can install it directly to your regular/isolated Python environment (I hope you know what a <a href="https://virtualenv.pypa.io/en/stable/" target="_blank">virtualenv</a> is) by using a simple pip command:
 
-> We can use the latest available version - <a href="http://docs.gunicorn.org/en/stable/news.html#id1" target="_blank">19.6.0</a>.
+> We can install the latest available version, which is <a href="http://docs.gunicorn.org/en/stable/news.html#id1" target="_blank">19.6.0</a>.
 
 ```
 pip install gunicorn
@@ -104,7 +102,7 @@ Also, you can use a system package available from the repository. To do this, ju
 sudo apt-get install gunicorn
 ```
 
-I suggest you to install it as a system package, because it will be easier.
+I suggest you to install it as a system package, it has some advantages over other methods.
 
 If the installation was OK (and I'm sure it was), we're ready to move forward.
 
@@ -112,7 +110,7 @@ If the installation was OK (and I'm sure it was), we're ready to move forward.
 
 It is likely that by this point you already got a question - why do we even need nginx? Gunicorn is a server, too! But it's not as easy as it seems at first glance.
 
-That's why we use nginx as reverse proxy to our Gunicorn instance. Meaning that nginx will have a couple directives in its config, to rewrite several headers and to redirect all requests to our Gunicorn server running on the local host. I know, I know, it's not clear enough, but you will get it once we'll start configuring our HTTP proxy. Going back to the question "why do we even need this":
+That's why we use nginx as reverse proxy to our Gunicorn instance. Meaning that nginx will have a couple directives in its config, to rewrite several headers and to redirect all requests to our Gunicorn server running on the local host. I know, I know, it's not clear enough, but you will understand it once we'll start configuring our HTTP proxy. Going back to the question "why do we even need this":
 
 - It is more secure.
 - It is much more faster.
@@ -123,13 +121,13 @@ And now we get to the very essence of our adventure.
 
 # Configuring nginx
 
-A few lines above we made sure that our nginx server was up and running. There was no attention to its configuring, simply because it works just from the box. But now we are going to сhange some parts of the default config. I will try to describe the whole process as detailed as possible, but please keep in mind that we are not creating perfect nginx configuration, so I'm not going to pay attention on those things that do not relate to the topic of this article (like security issues, performance tuning, and so on). In the end, luckily for us nginx is a well documented project, so I believe it's not that hard to find out how to configure it properly just using the official docs.
+A few lines above we made sure that our nginx server was up and running. There was no attention to its configuring, simply because it works just from the box. But now we are going to change it. I will try to describe the whole process as detailed as possible, but please keep in mind that we are not creating perfect nginx configuration, so I'm not going to pay attention on those things that do not relate to the topic of this article (like security issues, performance tuning, and so on). In the end, luckily for us nginx is a well documented project, I believe it's not that hard to find out how to configure it properly just using the official docs.
 
 First of all, let's talk about how it uses its config. Here's the basics.
 
 The primary one is **nginx.conf**. You are free to edit it whatever you like, but I suggest you to forget this way. You still have to keep some global preferences within this file, but all that relates solely to your app will be located in a different place.
 
-There is a wonderful feature that allow us to split configuration for each individual site. This is usually used in order to have multiple virtual hosts on a single server, but it is also a great way to make our server even more flexible. It makes the server configuration more convenient, and minimizes the number of possible errors. This is achieved by using the **include** statement. Now open nginx.conf with your favourite editor (mine is <a href="https://www.nano-editor.org" target="_blank">nano</a>):
+There is a wonderful feature that allow us to split configuration for each individual site. This is usually used in order to have multiple virtual hosts on a single server, but it is also a great way to make our server even more flexible. It makes the server configuration more convenient, and minimizes the number of possible errors. This is achieved by using the **include** statement. Now open **nginx.conf** with your favorite editor (mine is <a href="https://www.nano-editor.org" target="_blank">nano</a>):
 
 > Please remember that depending on the system or the installation method, the location of this file may be different.
 
@@ -137,7 +135,7 @@ There is a wonderful feature that allow us to split configuration for each indiv
 sudo nano /etc/nginx/nginx.conf
 ```
 
-Scroll down to Virtual Host Configs:
+Scroll down to **Virtual Host Configs**:
 
 	##
 	# Virtual Host Configs
@@ -146,9 +144,9 @@ Scroll down to Virtual Host Configs:
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
 
-As you can see there is an include statement, it tells nginx to load all configurations located within that locations. This is a really cool way to keep the basic preferences in nginx.conf, and to use site-enabled for everything else, in cases when it should relate to specific sites rather than the global environment. As for the **sites-enabled** itself, it is a directory that contains a symlinks to another directory called **sites-available**. I bet you've guessed what logic is used here! All your sites are in site-available. As soon as your app goes on production and you want to make it visible for everyone, just make a symlink to its config, then put it to sites-enabled - voila, everything works!
+See, there is an include statement, it tells nginx to load all configurations located within that locations. This is a really cool way to keep the basic preferences in nginx.conf, and to use site-enabled for everything else, in cases when it should relate to specific sites rather than the global environment. As for the **sites-enabled** itself, it is a directory that contains a symlinks to another directory called **sites-available**. I bet you've guessed what logic is used here! All your sites are in site-available. As soon as your app goes on production and you want to make it visible for everyone, just make a symlink to its config, then put it to sites-enabled - voila, everything works!
 
-Now let's create a new config inside sites-available:
+Now let's create a new config inside **sites-available**:
 
 ```
 sudo nano /etc/nginx/sites-available/testapp.conf
@@ -226,7 +224,7 @@ As you remember, we already defined a root path for our project. Now let's creat
 		start_response(status, response_headers)
 		return iter([data])
 
-Save it as **testapp.py** in /var/www, go to /var/www and try to start it (no need to use sudo here):
+Save it as **testapp.py** in **/var/www**, then, go to the same location and try to start it (no need to use sudo here):
 
 ```
 gunicorn -w 2 -b 127.0.0.1:8000 testapp:testapp
@@ -250,11 +248,11 @@ Congratulations, we're almost done!
 
 # A few finishing touches
 
-You might noticed that launching our Gunicorn instance as an active job is not something that is very convenient to use. From this point we have two options - we can either daemonize the Gunicorn process, or we can use a separate monitoring tools.
+You might noticed that launching our Gunicorn instance as an active job is not a handy thing, isn't it? From this point we have two options - we can either daemonize the Gunicorn process, or we can use a separate monitoring tools.
 
-Daemon-izing a process is easy, all you have to do is just to use a **-D** key with your starting parameters. With that your server will be detached from the terminal and entered the background. However, you have to repeat it every time after rebooting your server. Let's try something more flexible.
+Daemonizing a process is easy, all you have to do is just to use a **-D** key with your starting parameters. With that your server will be detached from the terminal and entered the background. However, you have to repeat it every time after rebooting your server. Let's try something more flexible.
 
-I prefer to use Gunicorn with <a href="http://smarden.org/runit/" target="_blank">runit</a>. To create a new configuration file for our test app, let's run our favourite text editor:
+I prefer to use Gunicorn with <a href="http://smarden.org/runit/" target="_blank">runit</a>. To create a new configuration file for our test app, let's run our favorite text editor:
 
 	#!/bin/sh
 
@@ -280,7 +278,7 @@ Now let's create a symlink so that runit can start it properly:
 sudo ln -s /etc/sv/testapp /etc/service/testapp
 ```
 
-After that, the server should start automatically. Type this to re-check it:
+After that, the server should start automatically. Type this to re-check:
 
 ```
 ps aux | grep testapp
@@ -307,7 +305,7 @@ sudo sv start|restart|stop testapp
 
 > In some cases you have to do a similar job for nginx, however, usually there is no need in doing this.
 
-That's all, our VPS is ready to work. Check the links below to learn about more advanced ways to configure the components that we used in this article.
+That's all, our VPS is ready to work! Check the links below to learn about more advanced ways to configure the components that we used in this article.
 
 See ya!
 
