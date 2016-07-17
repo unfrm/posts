@@ -230,7 +230,7 @@ As you remember, we already defined a root path for our project. Now let's creat
 		start_response(status, response_headers)
 		return iter([data])
 
-Save it as **testapp.py** in /var/www. Go to /var/www and try to start it (no need to use sudo here):
+Save it as **testapp.py** in /var/www, go to /var/www and try to start it (no need to use sudo here):
 
 ```
 gunicorn -w 2 -b 127.0.0.1:8000 testapp:testapp
