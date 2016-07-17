@@ -1,0 +1,11 @@
+#!/bin/sh
+
+GUNICORN=/usr/local/bin/gunicorn
+ROOT=/var/www
+PID=/var/run/gunicorn.pid
+APP=testapp:testapp
+
+if [ -f $PID]; then rm $PID; fi
+
+cd $ROOT
+exec $GUNICORN -w 2 -b 127.0.0.1:8000 --pid=$PID $APP
