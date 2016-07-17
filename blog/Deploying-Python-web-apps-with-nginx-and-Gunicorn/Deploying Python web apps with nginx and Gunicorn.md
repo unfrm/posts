@@ -82,7 +82,7 @@ And, finally, open the browser and go to the address of your server. If everythi
 
 > In case of doing this locally, it should be http://localhost/.
 
-<img src="/static/img/posts/20160718/nginx_started.png" alt="nginx started">
+<img src="http://unfrm.us/static/img/posts/20160718/nginx_started.png" alt="nginx started">
 
 Okay, it works, we can stop it (at least for now):
 
@@ -248,7 +248,7 @@ You may see something similar to this:
 
 That means we launched a gunicorn instance with 2 workers running on binded 127.0.0.1:8000. Now open the browser and go to the address of your server:
 
-<img src="/static/img/posts/20160718/gunicorn_started.png" alt="gunicorn started">
+<img src="http://unfrm.us/static/img/posts/20160718/gunicorn_started.png" alt="gunicorn started">
 
 Congratulations, we're almost done!
 
@@ -302,7 +302,7 @@ root       497  0.0  1.2  55788 12844 ?        S    15:06   0:00 /usr/bin/python
 
 Reboot your server, then open the browser and go to the address of your server:
 
-<img src="/static/img/posts/20160718/gunicorn_started.png" alt="gunicorn started">
+<img src="http://unfrm.us/static/img/posts/20160718/gunicorn_started.png" alt="gunicorn started">
 
 By the way, you can control it in this way:
 
@@ -315,3 +315,10 @@ sudo sv start|restart|stop testapp
 That's all, our VPS is ready to work. Check the links below to learn about more advanced ways to configure the components that we used in this article.
 
 See ya!
+
+# Related links
+
+- <a href="http://nginx.org/en/docs/" target="_blank">Nginx documentation</a>
+- <a href="http://docs.gunicorn.org/en/stable/" target="_blank">Gunicorn documentation</a>
+- <a href="http://smarden.org/runit/" target="_blank">A few words about runit</a>
+- <a href="http://aws.amazon.com" target="_blank">Get your own VPS for free</a>
