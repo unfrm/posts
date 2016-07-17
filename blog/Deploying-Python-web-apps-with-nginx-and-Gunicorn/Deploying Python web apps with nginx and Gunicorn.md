@@ -297,7 +297,7 @@ Reboot your server, then open the browser and go to the address of your server:
 
 <img src="http://unfrm.us/static/img/posts/20160718/gunicorn_started.png" alt="gunicorn started">
 
-By the way, you can control it in this way:
+You can control it in this way:
 
 ```
 sudo sv start|restart|stop testapp
