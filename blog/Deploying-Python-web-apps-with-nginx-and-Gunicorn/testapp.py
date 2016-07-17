@@ -1,5 +1,5 @@
 def testapp(environ, start_response):
-	data = 'Hello, world!\n'
+	data = 'Hello, World!\n'
 	status = '200 OK'
 	response_headers = [
     	('Content-type','text/plain'),
