@@ -299,7 +299,6 @@ root       305  0.0  0.0   4100   684 ?        Ss   13:17   0:00 runsv testapp
 root       491  1.0  1.5  55788 16204 ?        S    15:06   0:00 /usr/bin/python /usr/local/bin/gunicorn -w 2 -b 127.0.0.1:8000 --pid=/var/run/gunicorn.pid testapp:testapp
 root       496  0.0  1.2  55788 12844 ?        S    15:06   0:00 /usr/bin/python /usr/local/bin/gunicorn -w 2 -b 127.0.0.1:8000 --pid=/var/run/gunicorn.pid testapp:testapp
 root       497  0.0  1.2  55788 12844 ?        S    15:06   0:00 /usr/bin/python /usr/local/bin/gunicorn -w 2 -b 127.0.0.1:8000 --pid=/var/run/gunicorn.pid testapp:testapp
-
 ```
 
 Reboot your server, then open the browser and go to the address of your server:
