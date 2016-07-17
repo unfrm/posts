@@ -1,3 +1,5 @@
+# Deploying Python web apps with nginx and Gunicorn
+
 First of all, I should mention that all the information inside this article is suitable mostly for small projects. Serving large and heavy loaded apps is a completely different topic, which is, speaking honestly, goes beyond my knowledge and skills. So if you're just a Python hobbyist and you're looking a way to put your apps into the Web, I bet these next few words can be helpful.
 
 So here's the deal. Basically there are a few global approaches to make your Python apps visible for everyone:
