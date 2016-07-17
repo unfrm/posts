@@ -2,7 +2,7 @@
 
 First of all, I should mention that all the information inside this article is suitable mostly for small projects. Serving large and heavy loaded apps is a completely different topic, which is, speaking honestly, goes beyond my knowledge and skills. So if you're just a Python hobbyist and you're looking a way to put your apps into the Web, I bet these next few words can be helpful.
 
-So here's the deal. Basically there are a few global approaches to make your Python apps visible for everyone:
+So here's the deal. Basically, there are a few global approaches to make your Python apps visible for everyone:
 
 - PaaS (platform-as-a-service, <a href="https://www.pythonanywhere.com" target="_blank">PythonAnywhere</a>, <a href="https://developers.openshift.com" target="_blank">OpenShift</a>, <a href="https://www.heroku.com/" target="_blank">Heroku</a>) - provides its own software level above the hardware, meaning that your app will be deployed exactly on that software level.
 - Iaas (infrastructure-as-a-service, <a href="http://aws.amazon.com" target="_blank">Amazon AWS</a>) - if you ask me, it works pretty much the same as virtualized servers (I mean the way you get the resources), the only difference is how you pay for it.
@@ -13,7 +13,7 @@ I'm not going to speak about pros and cons, instead, here are a few reasons why 
 
 **Flexibility and customization.** I came to the conclusion that it's not about the PaaS platform. All your actions are limited to that software layer, on which your apps are working. No doubt, this approach can be flexible enough to maintain really huge apps, but along with that, I always want to manage everything personally, which is not possible because of the way how you get the resources.
 
-**Fun.** That's right, it can be fun enough. You won't get it with PaaS. By using a VPS you're starting with a clean slate, and you have to do a lot of different things, believe me, it's much more interesting than doing everything in one minute (of course, this may not be applicable for commercial projects).
+**Fun.** That's right, it can be fun enough. You won't get it with PaaS. By using a VPS you're starting with a clean slate, and you have to do a lot of different things. Believe me, it's much more interesting than doing everything in one minute (of course, this may not be applicable for commercial projects).
 
 **Pricing.** I don't like the pricing for PaaS platforms, it is unreasonably high when we talk about some serious load (personal apps can also be heavy, yeah). And this is doubly pointless when you take into account the fact that you can get a VPS in <a href="http://aws.amazon.com" target="_blank">Amazon AWS</a> for free. Yep, it's only for one year, but still.
 
@@ -56,7 +56,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 **Nginx.** Now we're ready to do a little of magic. Type the following command in order to install our nginx server:
 
-> No need to choose any specific version, let's stick to the version that is the default version in your repository (mine is 1.6.2, however the mainline is <a href="http://nginx.org/en/download.html" target="_blank">1.11.2</a>).
+> No need to choose any specific version, let's stick to the default version in your repository (mine is 1.6.2, however the mainline is <a href="http://nginx.org/en/download.html" target="_blank">1.11.2</a>).
 
 ```
 sudo apt-get install nginx
@@ -70,7 +70,7 @@ Let's start our web server:
 sudo service nginx start
 ```
 
-Then you can type this one, to check if the service was up and running:
+Also you can type this one, to check if the service was up and running:
 
 > Anyway, if you have any problems, like wrong configuration, etc., you'll be notified during the execution of previous command.
 
@@ -90,7 +90,7 @@ sudo service nginx stop
 
 **Gunicorn.** Last but not least - the Green Unicorn, a Python WSGI HTTP server. There is two different ways to install it. If you want to use it as a Python module, or if you want to use a virtualenv, you can install it directly to your regular/isolated Python environment (I hope you know what a <a href="https://virtualenv.pypa.io/en/stable/" target="_blank">virtualenv</a> is) by using a simple pip command:
 
-> We can install the latest available version, which is <a href="http://docs.gunicorn.org/en/stable/news.html#id1" target="_blank">19.6.0</a>.
+> We are going to install the latest available version, which is <a href="http://docs.gunicorn.org/en/stable/news.html#id1" target="_blank">19.6.0</a>.
 
 ```
 pip install gunicorn
@@ -127,7 +127,7 @@ First of all, let's talk about how it uses its config. Here's the basics.
 
 The primary one is **nginx.conf**. You are free to edit it whatever you like, but I suggest you to forget this way. You still have to keep some global preferences within this file, but all that relates solely to your app will be located in a different place.
 
-There is a wonderful feature that allow us to split configuration for each individual site. This is usually used in order to have multiple virtual hosts on a single server, but it is also a great way to make our server even more flexible. It makes the server configuration more convenient, and minimizes the number of possible errors. This is achieved by using the **include** statement. Now open **nginx.conf** with your favorite editor (mine is <a href="https://www.nano-editor.org" target="_blank">nano</a>):
+There is a wonderful feature that allow us to split configuration for each individual site. This is usually used in order to have multiple virtual hosts on a single server, but it is also a great way to make our server even more flexible. It makes the server configuration more convenient, and minimizes the number of possible errors. This is achieved by using an **include** statement. Now open **nginx.conf** with your favorite editor (mine is <a href="https://www.nano-editor.org" target="_blank">nano</a>):
 
 > Please remember that depending on the system or the installation method, the location of this file may be different.
 
@@ -144,7 +144,7 @@ Scroll down to **Virtual Host Configs**:
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
 
-See, there is an include statement, it tells nginx to load all configurations located within that locations. This is a really cool way to keep the basic preferences in nginx.conf, and to use site-enabled for everything else, in cases when it should relate to specific sites rather than the global environment. As for the **sites-enabled** itself, it is a directory that contains a symlinks to another directory called **sites-available**. I bet you've guessed what logic is used here! All your sites are in site-available. As soon as your app goes on production and you want to make it visible for everyone, just make a symlink to its config, then put it to sites-enabled - voila, everything works!
+See, there is an **include** statement, it tells nginx to load all configurations located within that locations. This is a really cool way to keep the basic preferences in nginx.conf, and to use site-enabled for everything else, in cases when it should relate to specific sites rather than the global environment. As for the **sites-enabled** itself, it is a directory that contains a symlinks to another directory called **sites-available**. I bet you've guessed what logic is used here! All your sites are in site-available. As soon as your app goes on production and you want to make it visible for everyone, just make a symlink to its config, then put it to sites-enabled - voila, everything works!
 
 Now let's create a new config inside **sites-available**:
 
@@ -206,7 +206,7 @@ sudo service nginx start
 
 # Configuring Gunicorn
 
-Basically, Gunicorn can be configured by using the following methods - through a command line, configuration file, or by using a framework settings. I prefer to use a separate config, but for this article we'll use a command line configuration.
+Basically, Gunicorn can be configured by using the following methods: through a command line, configuration file, or by using a framework settings. I prefer to use a separate config, but for this article we'll use a command line configuration.
 
 What I love about this server is that it works with minimal config. We are interested in only these two parameter: **-w** is for workers serving our app, **-b** is for binding proper address to work on. Let's move on to see how it should be used.
 
@@ -224,7 +224,7 @@ As you remember, we already defined a root path for our project. Now let's creat
 		start_response(status, response_headers)
 		return iter([data])
 
-Save it as **testapp.py** in **/var/www**, then, go to the same location and try to start it (no need to use sudo here):
+Save it as **testapp.py** in **/var/www**, then go to the same location and try to start it (no need to use sudo here):
 
 ```
 gunicorn -w 2 -b 127.0.0.1:8000 testapp:testapp
@@ -250,7 +250,7 @@ Congratulations, we're almost done!
 
 You might noticed that launching our Gunicorn instance as an active job is not a handy thing, isn't it? From this point we have two options - we can either daemonize the Gunicorn process, or we can use a separate monitoring tools.
 
-Daemonizing a process is easy, all you have to do is just to use a **-D** key with your starting parameters. With that your server will be detached from the terminal and entered the background. However, you have to repeat it every time after rebooting your server. Let's try something more flexible.
+Daemonizing a process is an easy task, all you have to do is just to use a **-D** key with your starting parameters. With that your server will be detached from the terminal and entered the background. However, you have to repeat it every time after rebooting your server. Let's try something more flexible.
 
 I prefer to use Gunicorn with <a href="http://smarden.org/runit/" target="_blank">runit</a>. To create a new configuration file for our test app, let's run our favorite text editor:
 
@@ -272,7 +272,7 @@ The syntax is simple, we just defined a couple of variables, an if statement tha
 sudo chmod u+x /etc/sv/testapp/run
 ```
 
-Now let's create a symlink so that runit can start it properly:
+Now we need to create a symlink, so that runit can start it properly:
 
 ```
 sudo ln -s /etc/sv/testapp /etc/service/testapp
