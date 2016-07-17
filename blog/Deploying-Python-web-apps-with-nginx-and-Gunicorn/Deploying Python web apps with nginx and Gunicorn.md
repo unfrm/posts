@@ -92,6 +92,8 @@ sudo service nginx stop
 
 **Gunicorn.** Last but not least - the Green Unicorn, a Python WSGI HTTP server. There is two different ways to install it. If you want to use it as a Python module, or if you want to use a virtualenv, you can install it directly to your regular/isolated Python environment (I hope you know what a <a href="https://virtualenv.pypa.io/en/stable/" target="_blank">virtualenv</a> is) by using a simple pip command:
 
+> Here you can use the latest available version - <a href="http://docs.gunicorn.org/en/stable/news.html#id1" target="_blank">19.6.0</a>.
+
 ```
 pip install gunicorn
 ```
